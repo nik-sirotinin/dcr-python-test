@@ -67,6 +67,10 @@ python load_data.py
 
 currently populates the database from a local JSON file. Please update this management command to obtain the JSON input data from this url: `https://storage.googleapis.com/dcr-django-test/countries.json`
 
+#### Solution
+
+Updated to retrieve JSON from the API using the standard library `urllib` module.
+
 ### Exercise 3 - Store additional Data
 
 The previous script:

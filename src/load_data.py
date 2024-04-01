@@ -1,10 +1,11 @@
+from urllib.request import urlopen
 import json
 
 from db import Country, Region
 
 
 class LoadData:
-    DATA_FILE = "../data/countries.json"
+    URL = "https://storage.googleapis.com/dcr-django-test/countries.json"
 
     def __init__(self):
         # Cache of regions
@@ -12,8 +13,9 @@ class LoadData:
 
     def get_raw_data(self):
         data = None
-        with open(self.DATA_FILE) as f:
-            data = json.load(f)
+        with urlopen(self.URL) as response:
+            body = response.read()
+            data = json.loads(body)
         return data
 
     def add_country(self, data):
