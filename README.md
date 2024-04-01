@@ -28,11 +28,13 @@ python3 list_countries.py
 ### Exercise 1 - Add Stats
 
 Please add a script that will provide aggregated stats for each region. The stats should contain:
- * The region's name
- * The number of countries in that region (a simple count)
- * The total population of the region (the sum of the population of each country)
+
+- The region's name
+- The number of countries in that region (a simple count)
+- The total population of the region (the sum of the population of each country)
 
 The output should be JSON with a format:
+
 ```json
 {
     "regions": [
@@ -51,29 +53,39 @@ The output should be JSON with a format:
 }
 ```
 
+#### Solution
+
+Created the script at `src/region_stats.py`
+
 ### Exercise 2 - Integrate with API
 
 The script:
+
 ```bash
 python load_data.py
 ```
+
 currently populates the database from a local JSON file. Please update this management command to obtain the JSON input data from this url: `https://storage.googleapis.com/dcr-django-test/countries.json`
 
 ### Exercise 3 - Store additional Data
 
 The previous script:
+
 ```bash
 python load_data.py
 ```
+
 currently extracts and stores the data:
- * name
- * alpha2Code
- * alpha3Code
- * population
- * region
+
+- name
+- alpha2Code
+- alpha3Code
+- population
+- region
 
 Please update the database tables and management command to also import:
- * topLevelDomain
- * capital
 
- Please record any SQL commands executed to modify the database schema.
+- topLevelDomain
+- capital
+
+Please record any SQL commands executed to modify the database schema.
