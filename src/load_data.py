@@ -1,7 +1,7 @@
 from urllib.request import urlopen
 import json
 
-from db import Country, Region
+from db import Country, CountryTopLevelDomain, Region, TopLevelDomain
 
 
 class LoadData:
@@ -10,6 +10,8 @@ class LoadData:
     def __init__(self):
         # Cache of regions
         self.regions = {}
+        # Cache of top level domains
+        self.tlds = {}
 
     def get_raw_data(self):
         data = None
@@ -24,16 +26,24 @@ class LoadData:
 
         country = Country()
         found = country.get_by_name(data["name"])
-        if found:
-            return
-        country.insert(
-            data["name"],
-            data["alpha2Code"],
-            data["alpha3Code"],
-            data["population"],
-            region_id,
-        )
-        print(country.data)
+        if found is None:
+            country.insert(
+                data["name"],
+                data["alpha2Code"],
+                data["alpha3Code"],
+                data["population"],
+                region_id,
+                data["capital"],
+            )
+            print(country.data)
+
+        country_id = country.data["id"]
+        country.update_capital(data["capital"])
+        tld_names = data.get("topLevelDomain", [])
+        for tld_name in tld_names:
+            tld_id = self.get_tld_id(tld_name)
+            ctld = CountryTopLevelDomain()
+            ctld.get_or_create(country_id, tld_id)
 
     def get_region_id(self, region_name):
         if region_name not in self.regions:
@@ -41,6 +51,13 @@ class LoadData:
             region.get_or_create_by_name(region_name)
             self.regions[region.data["name"]] = region.data["id"]
         return self.regions[region_name]
+
+    def get_tld_id(self, tld_name):
+        if tld_name not in self.tlds:
+            tld = TopLevelDomain()
+            tld.get_or_create_by_name(tld_name)
+            self.tlds[tld.data["name"]] = tld.data["id"]
+        return self.tlds[tld_name]
 
     def run(self):
         data = self.get_raw_data()

@@ -93,3 +93,17 @@ Please update the database tables and management command to also import:
 - capital
 
 Please record any SQL commands executed to modify the database schema.
+
+#### Solution
+
+Created a manual migration script:
+
+1. Adds a "capital" column to the "country" table
+1. Creates a "topLevelDomain" table
+1. Creates a "countryTopLevelDomain" junction table for the many-to-many relationship between countries and top-level domains
+
+Created some new classes in the DB module to handle the new tables, updated `Country` methods to accommodate "capital" column.
+
+Updated the `load_data` script and `Country.list_all()` function to query new data with a JOIN and output all the new information.
+
+**TODO**: the top-level domains from `list_all()` seem to come out as Tuples, I'm not entirely sure why. Also, the way `load_data` clobbers the capital column seems inelegant, I couldn't think of a better place to put it.
