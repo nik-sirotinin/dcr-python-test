@@ -15,17 +15,13 @@ class Migration(DBO):
         self.cursor.execute("PRAGMA table_info('country')")
         column_names = [col[1] for col in self.cursor.fetchall()]
         if "capital" not in column_names:
-            print("adding col for capital")
             alter_query = f"ALTER TABLE country ADD COLUMN capital TEXT"
             self.cursor.execute(alter_query)
         # Top-level domain table
-        print("creating TLD table")
         self.create_table(
             "topLevelDomain", ["id INTEGER PRIMARY KEY", "name TEXT NOT NULL"]
         )
-        print(f"conn: {conn}")
         # Junction table
-        print("Creating junction table")
         self.create_table(
             "countryTopLevelDomain",
             [
